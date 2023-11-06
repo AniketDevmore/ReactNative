@@ -5,18 +5,50 @@
  * @format
  */
 
-import React from 'react';
-import {View} from 'react-native';
+import React, {useState} from 'react';
+import {ImageBackground, SafeAreaView, StyleSheet, View} from 'react-native';
 import GoalsInput from './components/GoalsInput';
 import StartGameScreen from './screens/StartGameScree';
+import GameScreen from './screens/GameScreen';
 
 const App = (): JSX.Element => {
+  const [userNumber, setUnserNumber] = useState(null);
+
+  const startGameHandler = (pickNumber: any) => {
+    setUnserNumber(pickNumber);
+  };
+
+  let screen = <StartGameScreen onPickNumber={startGameHandler} />;
+
+  if (userNumber) {
+    screen = <GameScreen />;
+  }
+
   return (
-    <View>
+    <View style={styles.rootScreen}>
       {/* <GoalsInput /> */}
-      <StartGameScreen />
+      <ImageBackground
+        source={require('./assets/Images/dice.jpg')}
+        resizeMode="cover"
+        style={styles.rootScreen}
+        imageStyle={styles.imageStyle}>
+        <SafeAreaView style={styles.safeAreaView}>{screen}</SafeAreaView>
+      </ImageBackground>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  rootScreen: {
+    flex: 1,
+    backgroundColor: 'red',
+  },
+  imageStyle: {
+    opacity: 0.6,
+  },
+  safeAreaView: {
+    flex: 1,
+  },
+});
 
 export default App;
